@@ -1,7 +1,7 @@
 package cz.cuni.d3s.adaptiveamorphousrouting.demo;
 
 import cz.cuni.d3s.adaptiveamorphousrouting.components.Robot;
-import cz.cuni.d3s.adaptiveamorphousrouting.environment.RobotPlugin;
+import cz.cuni.d3s.adaptiveamorphousrouting.networkmovement.RobotPlugin;
 import cz.cuni.mff.d3s.deeco.annotations.processor.AnnotationProcessorException;
 import cz.cuni.mff.d3s.deeco.runners.DEECoSimulation;
 import cz.cuni.mff.d3s.deeco.runtime.DEECoException;

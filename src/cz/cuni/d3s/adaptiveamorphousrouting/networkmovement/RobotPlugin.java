@@ -1,4 +1,4 @@
-package cz.cuni.d3s.adaptiveamorphousrouting.environment;
+package cz.cuni.d3s.adaptiveamorphousrouting.networkmovement;
 
 import java.util.Arrays;
 import java.util.List;
