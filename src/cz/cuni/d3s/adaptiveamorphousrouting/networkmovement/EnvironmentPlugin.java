@@ -1,7 +1,10 @@
 package cz.cuni.d3s.adaptiveamorphousrouting.networkmovement;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import cz.cuni.mff.d3s.deeco.runtime.DEECoContainer;
 import cz.cuni.mff.d3s.deeco.runtime.DEECoPlugin;
@@ -9,11 +12,13 @@ import cz.cuni.mff.d3s.jdeeco.position.Position;
 import cz.cuni.mff.d3s.jdeeco.visualizer.network.Network;
 import cz.cuni.mff.d3s.jdeeco.visualizer.network.Node;
 
-public class RobotNetPlugin implements DEECoPlugin {
-	private Network network;
+public class EnvironmentPlugin implements DEECoPlugin {
+	private Network network;	
+	private Set<RobotReadonly> robots;
 	
-	public RobotNetPlugin() {
-		network = new Network();
+	public EnvironmentPlugin(Network network) {
+		this.network = network;
+		this.robots = new HashSet<>();
 	}
 	
 	public List<Class<? extends DEECoPlugin>> getDependencies() {
@@ -22,7 +27,6 @@ public class RobotNetPlugin implements DEECoPlugin {
 
 	public void init(DEECoContainer container) {
 		// TODO Auto-generated method stub
-
 	}
 	
 	public Node resolveNode(Position position) {
@@ -40,5 +44,17 @@ public class RobotNetPlugin implements DEECoPlugin {
 		}
 		
 		return nearest;
+	}
+
+	public boolean isAvailable(Node node) {
+		return robots.stream().noneMatch(x -> x.getCurrentNode() == node);
+	}
+
+	public void register(RobotReadonly robot) {
+		robots.add(robot); 		
+	}
+
+	public boolean isNeighbour(Node currentNode, Node node) {
+		return network.getSuccessors(currentNode).contains(node);
 	}
 }
