@@ -1,7 +1,6 @@
 package cz.cuni.d3s.adaptiveamorphousrouting.networkmovement;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +14,7 @@ import cz.cuni.mff.d3s.jdeeco.visualizer.network.Network;
 import cz.cuni.mff.d3s.jdeeco.visualizer.network.Node;
 
 public class EnvironmentPlugin implements DEECoPlugin {
-	private Network network;	
+	private Network network;
 	private Set<RobotReadonly> robots;
 	
 	public EnvironmentPlugin(Network network) {
@@ -67,7 +66,11 @@ public class EnvironmentPlugin implements DEECoPlugin {
 			collect(Collectors.toSet());
 	}
 
-	public Link getLink(Node currentNode, Node node) {		
-		return network.getLinksFrom(currentNode).stream().filter(x -> {System.out.print(System.identityHashCode(x.getTo()) + "?=" + System.identityHashCode(node)); return x.getTo() == node; }).findFirst().get();		
-	}	
+	public Link getLink(Node currentNode, Node node) {
+		return network.getLinksFrom(currentNode).stream().filter(x -> x.getTo() == node).findFirst().get();		
+	}
+	
+/*	public Node getRandomNeigbour(Node node) {
+		return network.getLinksFrom(node).iterator().next().getTo();
+	}*/
 }

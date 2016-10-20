@@ -1,6 +1,5 @@
 package cz.cuni.d3s.adaptiveamorphousrouting.components;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,13 +16,10 @@ import cz.cuni.mff.d3s.deeco.annotations.Out;
 import cz.cuni.mff.d3s.deeco.annotations.PeriodicScheduling;
 import cz.cuni.mff.d3s.deeco.annotations.Process;
 import cz.cuni.mff.d3s.deeco.task.ParamHolder;
-import cz.cuni.mff.d3s.deeco.task.ProcessContext;
 import cz.cuni.mff.d3s.jdeeco.visualizer.network.Dijkstra;
 import cz.cuni.mff.d3s.jdeeco.visualizer.network.Link;
 import cz.cuni.mff.d3s.jdeeco.visualizer.network.Network;
 import cz.cuni.mff.d3s.jdeeco.visualizer.network.Node;
-import cz.cuni.mff.d3s.jdeeco.visualizer.records.LeftLinkRecord;
-import cz.cuni.mff.d3s.jdeeco.visualizer.records.LinkRecord;
 
 @Component
 public class Robot {
@@ -65,17 +61,24 @@ public class Robot {
 	@Process
 	@PeriodicScheduling(period = 8000)
 	public static void plan(@In("id") String id, @In("robot") RobotPlugin robot, @In("target") Node target, @Out("plan") ParamHolder<ArrayList<Node>> plan) {
-		List<Link> links = Dijkstra.getShortestPath(network, robot.getCurrentNode(), target);		
-		plan.value = new ArrayList<>(links.stream().map(x -> x.getTo()).collect(Collectors.toList()));		
+		Node t = target;
+		target = network.getNodes().stream().filter(x -> x.getId() == t.getId()).findFirst().get();
+		Node from = robot.getCurrentNode();
+		from = network.getNodes().stream().filter(x -> x.getId() == robot.getCurrentNode().getId()).findFirst().get();
+		List<Link> links = Dijkstra.getShortestPath(network, from, target);
+		plan.value = new ArrayList<>(links.stream().map(x -> x.getTo()).collect(Collectors.toList()));
 	}
 	
 	@Process
 	@PeriodicScheduling(period = 1000)
 	public static void move(@In("id") String id, @In("robot") RobotPlugin robot, @InOut("plan") ParamHolder<ArrayList<Node>> plan) {
-		if (plan.value.isEmpty())
+		if (plan.value.isEmpty()) {
+			System.out.println(id + " has no plan :-(");
 			return;
+		}
 		
-		robot.moveTo(ProcessContext.getRuntimeLogger(), plan.value.get(0));
-		plan.value.remove(0);
+		if(robot.moveTo(plan.value.get(0))) {
+			plan.value.remove(0);
+		}
 	}
 }
