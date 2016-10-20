@@ -1,10 +1,13 @@
 package cz.cuni.d3s.adaptiveamorphousrouting.components;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import cz.cuni.d3s.adaptiveamorphousrouting.networkmovement.RobotPlugin;
+import cz.cuni.d3s.adaptiveamorphousrouting.networkmovement.RobotReadonly;
 import cz.cuni.mff.d3s.deeco.annotations.Component;
 import cz.cuni.mff.d3s.deeco.annotations.In;
 import cz.cuni.mff.d3s.deeco.annotations.InOut;
@@ -33,6 +36,9 @@ public class Robot {
 	
 	public ArrayList<Node> plan = new ArrayList<>();
 	
+	@Local
+	public Set<RobotReadonly> nearbyRobots = new HashSet<>();
+	
 	public Robot(Integer id, RobotPlugin robot, Node target) {
 		this.id = id.toString();
 		this.robot = robot;
@@ -43,6 +49,12 @@ public class Robot {
 	@PeriodicScheduling(period = 1000)
 	public static void status(@In("id") String id, @In("robot") RobotPlugin robot) {
 		System.out.println("Status of robot " + id + ": " + robot.getPosition());
+	}
+	
+	@Process
+	@PeriodicScheduling(period = 500)
+	public static void senseSurroundings(@In("id") String id, @In("robot") RobotPlugin robot, @Out("nearbyRobots") ParamHolder<Set<RobotReadonly>> nearbyRobots) {
+		nearbyRobots.value = robot.senseRobots();		
 	}
 	
 	@Process

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import cz.cuni.mff.d3s.deeco.runtime.DEECoContainer;
 import cz.cuni.mff.d3s.deeco.runtime.DEECoPlugin;
@@ -56,5 +57,12 @@ public class EnvironmentPlugin implements DEECoPlugin {
 
 	public boolean isNeighbour(Node currentNode, Node node) {
 		return network.getSuccessors(currentNode).contains(node);
+	}
+
+	public Set<RobotReadonly> getSurroundingRobots(RobotPlugin robotPlugin, double senseRangeM) {
+		return robots.stream().
+			filter(x -> x != robotPlugin).
+			filter(x -> x.getPosition().euclidDistanceTo(robotPlugin.getPosition()) <= senseRangeM).
+			collect(Collectors.toSet());		
 	}
 }

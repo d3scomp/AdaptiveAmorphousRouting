@@ -25,7 +25,7 @@ public class Demo {
 	private static final Random generator = new Random(42);
 	private static final int MAX_NODES = 10;
 	private static final int MAX_EDGES = 10;
-	private static final int ROBOTS = 1;
+	private static final int ROBOTS = 4;
 	
 	private static cz.cuni.mff.d3s.jdeeco.visualizer.network.Network createMap() {
 		cz.cuni.mff.d3s.jdeeco.visualizer.network.Network network = new cz.cuni.mff.d3s.jdeeco.visualizer.network.Network();

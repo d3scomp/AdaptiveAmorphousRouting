@@ -2,6 +2,7 @@ package cz.cuni.d3s.adaptiveamorphousrouting.networkmovement;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import cz.cuni.mff.d3s.deeco.runtime.DEECoContainer;
 import cz.cuni.mff.d3s.deeco.runtime.DEECoPlugin;
@@ -14,6 +15,8 @@ public class RobotPlugin implements DEECoPlugin, PositionProvider, RobotReadonly
 	
 	private Node currentNode;
 	private EnvironmentPlugin environment;
+	
+	public static final double SENSE_RANGE_M = 4200;
 
 	public RobotPlugin(Node source) {
 		this.currentNode = source;
@@ -52,4 +55,9 @@ public class RobotPlugin implements DEECoPlugin, PositionProvider, RobotReadonly
 	public Position getPosition() {
 		return new Position(currentNode.getX(), currentNode.getY());
 	}	
+	
+	
+	public Set<RobotReadonly> senseRobots() {
+		return environment.getSurroundingRobots(this, SENSE_RANGE_M);
+	}
 }
