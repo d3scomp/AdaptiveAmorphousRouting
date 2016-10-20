@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import cz.cuni.mff.d3s.deeco.runtime.DEECoContainer;
 import cz.cuni.mff.d3s.deeco.runtime.DEECoPlugin;
 import cz.cuni.mff.d3s.jdeeco.position.Position;
+import cz.cuni.mff.d3s.jdeeco.visualizer.network.Link;
 import cz.cuni.mff.d3s.jdeeco.visualizer.network.Network;
 import cz.cuni.mff.d3s.jdeeco.visualizer.network.Node;
 
@@ -63,6 +64,10 @@ public class EnvironmentPlugin implements DEECoPlugin {
 		return robots.stream().
 			filter(x -> x != robotPlugin).
 			filter(x -> x.getPosition().euclidDistanceTo(robotPlugin.getPosition()) <= senseRangeM).
-			collect(Collectors.toSet());		
+			collect(Collectors.toSet());
 	}
+
+	public Link getLink(Node currentNode, Node node) {		
+		return network.getLinksFrom(currentNode).stream().filter(x -> {System.out.print(System.identityHashCode(x.getTo()) + "?=" + System.identityHashCode(node)); return x.getTo() == node; }).findFirst().get();		
+	}	
 }

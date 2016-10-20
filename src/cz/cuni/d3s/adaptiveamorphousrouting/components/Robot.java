@@ -1,5 +1,6 @@
 package cz.cuni.d3s.adaptiveamorphousrouting.components;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,10 +17,13 @@ import cz.cuni.mff.d3s.deeco.annotations.Out;
 import cz.cuni.mff.d3s.deeco.annotations.PeriodicScheduling;
 import cz.cuni.mff.d3s.deeco.annotations.Process;
 import cz.cuni.mff.d3s.deeco.task.ParamHolder;
+import cz.cuni.mff.d3s.deeco.task.ProcessContext;
 import cz.cuni.mff.d3s.jdeeco.visualizer.network.Dijkstra;
 import cz.cuni.mff.d3s.jdeeco.visualizer.network.Link;
 import cz.cuni.mff.d3s.jdeeco.visualizer.network.Network;
 import cz.cuni.mff.d3s.jdeeco.visualizer.network.Node;
+import cz.cuni.mff.d3s.jdeeco.visualizer.records.LeftLinkRecord;
+import cz.cuni.mff.d3s.jdeeco.visualizer.records.LinkRecord;
 
 @Component
 public class Robot {
@@ -34,6 +38,7 @@ public class Robot {
 	@Local
 	public Node target;	
 	
+	@Local
 	public ArrayList<Node> plan = new ArrayList<>();
 	
 	@Local
@@ -70,7 +75,7 @@ public class Robot {
 		if (plan.value.isEmpty())
 			return;
 		
-		robot.moveTo(plan.value.get(0));
+		robot.moveTo(ProcessContext.getRuntimeLogger(), plan.value.get(0));
 		plan.value.remove(0);
 	}
 }
