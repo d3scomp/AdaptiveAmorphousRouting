@@ -16,6 +16,7 @@ The physical representation of the robot is realized in the RobotPlugin class. T
 2. Open Eclipse, import project AdaptiveAmorphousRouting to workspace
 3. Right click the project and **Maven->Update Project**
 4. Done!
+
 ## Running
 ### Running the Demo
 To run the demo, simply run Demo.launch in Eclipse. The simulation runs for a few seconds and then saves all the required data capturing the progress of the simulation in the **logs/runtime** folder. The successful termination of the simulation is signaled by the message *Sim data saved.* in the console.
