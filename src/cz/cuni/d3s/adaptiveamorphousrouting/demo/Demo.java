@@ -125,7 +125,7 @@ public class Demo {
 	
 
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, DEECoException, AnnotationProcessorException, IOException {
-		System.out.println("Setting up DEECo simulaiton");
+		System.out.println("Setting up DEECo simulation");
 				
 		DEECoSimulation realm = new DEECoSimulation(new DiscreteEventTimer());
 		realm.addPlugin(new SimpleBroadcastDevice(25, 10, 150, 1024));
